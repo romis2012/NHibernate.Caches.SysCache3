@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Runtime.Caching;
 using NHibernate.Cache;
 using Environment = NHibernate.Cfg.Environment;
@@ -284,6 +285,21 @@ namespace NHibernate.Caches.SysCache3
 			{
 				log.Debug("no data dependencies specified");
 				return;
+			}
+
+			if (dependencyConfig.FileDependencies.Count > 0)
+			{
+				var paths = new List<string>();
+				foreach (FileCacheDependencyElement fileConfig in dependencyConfig.FileDependencies)
+				{
+					var path = fileConfig.Path;
+					if (!Path.IsPathRooted(path))
+					{
+						path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
+					}
+					paths.Add(path);
+				}
+				_dependencyEnlisters.Add(new FileCacheDependencyEnlister(paths));
 			}
 
 			if (dependencyConfig.CommandDependencies.Count > 0)

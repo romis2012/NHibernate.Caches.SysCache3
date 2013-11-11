@@ -49,9 +49,12 @@
     <Compile Include="Configuration\CacheRegionElement.cs" />
     <Compile Include="Configuration\CommandCacheDependencyCollection.cs" />
     <Compile Include="Configuration\CommandCacheDependencyElement.cs" />
+    <Compile Include="Configuration\FileCacheDependencyCollection.cs" />
+    <Compile Include="Configuration\FileCacheDependencyElement.cs" />
     <Compile Include="Configuration\SysCacheSection.cs" />
     <Compile Include="Configuration\TableCacheDependencyCollection.cs" />
     <Compile Include="Configuration\TableCacheDependencyElement.cs" />
+    <Compile Include="Dependency\FileCacheDependencyEnlister.cs" />
     <Compile Include="Dependency\ICacheDependencyEnlister.cs" />
     <Compile Include="Dependency\SqlCommandCacheDependencyEnlister.cs" />
     <Compile Include="IConnectionStringProvider.cs" />

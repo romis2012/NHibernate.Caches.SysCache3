@@ -28,6 +28,11 @@ namespace NHibernate.Caches.SysCache3
 			                                                 ConfigurationPropertyOptions.None);
 
 			properties.Add(commandsProperty);
+
+            var filesProperty = new ConfigurationProperty("files", typeof(FileCacheDependencyCollection), null,
+                                                             ConfigurationPropertyOptions.None);
+
+            properties.Add(filesProperty);
 		}
 
 		/// <summary>
@@ -45,6 +50,11 @@ namespace NHibernate.Caches.SysCache3
 		{
 			get { return (CommandCacheDependencyCollection) base["commands"]; }
 		}
+
+        public FileCacheDependencyCollection FileDependencies
+        {
+            get { return (FileCacheDependencyCollection)base["files"]; }
+        }
 
 		/// <summary>
 		/// Gets the collection of properties.

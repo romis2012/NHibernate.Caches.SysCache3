@@ -3,9 +3,6 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace NHibernate.Caches.SysCache3
 {
-	/// <summary>
-	/// Represents a collection of <see cref="CommandCacheDependencyElement"/> objects.
-	/// </summary>
 	[SuppressMessage("Microsoft.Design", "CA1010:CollectionsShouldImplementGenericInterface"),
 	 ConfigurationCollection(typeof (CommandCacheDependencyElement),
 	 	CollectionType = ConfigurationElementCollectionType.AddRemoveClearMap)]

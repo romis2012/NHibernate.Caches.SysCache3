@@ -3,10 +3,7 @@ using System.Configuration;
 
 namespace NHibernate.Caches.SysCache3
 {
-	/// <summary>
-	/// Configures a sql command notification cache dependency for am NHibernate cache region 
-	/// </summary>
-	public class CommandCacheDependencyElement : ConfigurationElement
+    public class CommandCacheDependencyElement : ConfigurationElement
 	{
 		/// <summary>Holds the configuration property definitions</summary>
 		private static readonly ConfigurationPropertyCollection properties;
