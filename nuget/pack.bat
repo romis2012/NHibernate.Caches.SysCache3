@@ -1,0 +1,1 @@
+nuget pack NHibernate.Caches.SysCache3.nuspec
