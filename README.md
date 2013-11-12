@@ -13,10 +13,10 @@ How to use it (see also NHibernate.Caches.SysCache2 from [NHibernate Contrib](ht
 <configuration>
   
   <configSections>
-    <section name="syscache2" type="NHibernate.Caches.SysCache3.SysCacheSection, NHibernate.Caches.SysCache3" />
+    <section name="syscache3" type="NHibernate.Caches.SysCache3.SysCacheSection, NHibernate.Caches.SysCache3" />
   </configSections>
   
-  <syscache2>
+  <syscache3>
     <cacheRegion name="DefaultCache" relativeExpiration="3600">
       <dependencies>
         <commands>
@@ -28,7 +28,7 @@ How to use it (see also NHibernate.Caches.SysCache2 from [NHibernate Contrib](ht
         </files>
       </dependencies>
     </cacheRegion>
-  </syscache2>
+  </syscache3>
   
 </configuration>
 ```
