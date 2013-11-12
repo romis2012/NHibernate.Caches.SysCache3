@@ -297,7 +297,10 @@ namespace NHibernate.Caches.SysCache3
 					{
 						path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
 					}
-					paths.Add(path);
+                    if (File.Exists(path))
+				    {
+                        paths.Add(path);
+				    }
 				}
 				_dependencyEnlisters.Add(new FileCacheDependencyEnlister(paths));
 			}
