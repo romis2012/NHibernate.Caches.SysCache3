@@ -2,13 +2,13 @@
 <package>
   <metadata>
     <id>NHibernate.Caches.SysCache3</id>
-    <version>1.0.1</version>
+    <version>1.0.3</version>
     <authors>romis2012</authors>
     <owners>romis2012</owners>
     <projectUrl>https://github.com/romis2012/NHibernate.Caches.SysCache3</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>NHibernate 2nd level cache provider that uses System.Runtime.Caching.MemoryCache</description>
-    <releaseNotes>Supports for HostFileChangeMonitor added</releaseNotes>
+    <releaseNotes>fixed some minor bugs</releaseNotes>
     <copyright>Copyright 2013</copyright>
     <tags>NHibernate ORM DataBase DAL ObjectRelationalMapping</tags>
     <dependencies>

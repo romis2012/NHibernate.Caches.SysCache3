@@ -12,7 +12,7 @@ namespace NHibernate.Caches.SysCache3
 	public class SysCacheSection : ConfigurationSection
 	{
 		/// <summary>Confiuration section name</summary>
-		private const string SectionName = "syscache2";
+		private const string SectionName = "syscache3";
 
 		/// <summary>Holds the configuration property definitions</summary>
 		private static readonly ConfigurationPropertyCollection properties;
