@@ -2,7 +2,7 @@
 <package>
   <metadata>
     <id>NHibernate.Caches.SysCache3</id>
-    <version>1.0.3</version>
+    <version>1.0.4</version>
     <authors>romis2012</authors>
     <owners>romis2012</owners>
     <projectUrl>https://github.com/romis2012/NHibernate.Caches.SysCache3</projectUrl>
