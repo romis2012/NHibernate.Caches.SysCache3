@@ -7,7 +7,12 @@
     <owners>romis2012</owners>
     <projectUrl>https://github.com/romis2012/NHibernate.Caches.SysCache3</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>NHibernate 2nd level cache provider that uses System.Runtime.Caching.MemoryCache. Supports SqlChangeMonitor and HostFileChangeMonitor. Does not depend on System.Web.dll</description>
+    <description>NHibernate 2nd level cache provider that uses System.Runtime.Caching.MemoryCache. 
+Supports SqlChangeMonitor and HostFileChangeMonitor. 
+Does not depend on System.Web.dll</description>
+	<summary>NHibernate 2nd level cache provider that uses System.Runtime.Caching.MemoryCache. 
+Supports SqlChangeMonitor and HostFileChangeMonitor. 
+Does not depend on System.Web.dll</summary>
     <releaseNotes>fixed some minor bugs</releaseNotes>
     <copyright>Copyright 2013</copyright>
     <tags>NHibernate ORM DataBase DAL ObjectRelationalMapping</tags>
