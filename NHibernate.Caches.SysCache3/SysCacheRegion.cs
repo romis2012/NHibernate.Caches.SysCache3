@@ -5,6 +5,8 @@ using System.IO;
 using System.Runtime.Caching;
 using NHibernate.Cache;
 using Environment = NHibernate.Cfg.Environment;
+using System.Threading.Tasks;
+using System.Threading;
 
 namespace NHibernate.Caches.SysCache3
 {
@@ -22,7 +24,7 @@ namespace NHibernate.Caches.SysCache3
 		/// <summary>The cache for the web application</summary>
 		//private readonly System.Web.Caching.Cache _webCache;
 
-        private readonly ObjectCache _cache = MemoryCache.Default;
+		private readonly ObjectCache _cache = MemoryCache.Default;
 
 		/// <summary>Indicates if the root cache item has been stored or not</summary>
 		private bool _isRootItemCached;
@@ -87,11 +89,20 @@ namespace NHibernate.Caches.SysCache3
 		{
 			//remove the root cache item, this will cause all of the individual items to be removed from the cache
 			//_webCache.Remove(_rootCacheKey);
-		    _cache.Remove(_rootCacheKey);
+			_cache.Remove(_rootCacheKey);
 			_isRootItemCached = false;
 
 			log.Debug("All items cleared from the cache.");
 		}
+
+		public Task ClearAsync(CancellationToken cancellationToken)
+		{
+			return Task.Run(() =>
+			{
+				Clear();
+			}, cancellationToken);
+		}
+
 
 		/// <summary>
 		/// Clean up.
@@ -111,7 +122,7 @@ namespace NHibernate.Caches.SysCache3
 
 			string cacheKey = GetCacheKey(key);
 
-		    object cachedObject = _cache.Get(cacheKey);
+			object cachedObject = _cache.Get(cacheKey);
 			if (cachedObject == null)
 			{
 				return null;
@@ -126,6 +137,15 @@ namespace NHibernate.Caches.SysCache3
 			return null;
 		}
 
+		public Task<object> GetAsync(object key, CancellationToken cancellationToken)
+		{
+			return Task.Run(() =>
+			{
+				return Get(key);
+			}, cancellationToken);
+		}
+
+
 		/// <summary>
 		/// If this is a clustered cache, lock the item
 		/// </summary>
@@ -135,6 +155,15 @@ namespace NHibernate.Caches.SysCache3
 		{
 			//nothing to do here
 		}
+
+		public Task LockAsync(object key, CancellationToken cancellationToken)
+		{
+			return Task.Run(() =>
+			{
+				Lock(key);
+			}, cancellationToken);
+		}
+
 
 		/// <summary>
 		/// Generate a timestamp
@@ -164,7 +193,7 @@ namespace NHibernate.Caches.SysCache3
 
 			string cacheKey = GetCacheKey(key);
 
-            if (_cache[cacheKey] != null)
+			if (_cache[cacheKey] != null)
 			{
 				//
 				//_cache.Remove(cacheKey);
@@ -183,6 +212,15 @@ namespace NHibernate.Caches.SysCache3
 			_cache.Set(cacheKey, new DictionaryEntry(key, value), policy);
 		}
 
+		public Task PutAsync(object key, object value, CancellationToken cancellationToken)
+		{
+			return Task.Run(() =>
+			{
+				Put(key, value);
+			}, cancellationToken);
+		}
+
+
 		/// <summary>
 		/// Gets the name of the cache region
 		/// </summary>
@@ -198,8 +236,17 @@ namespace NHibernate.Caches.SysCache3
 				throw new ArgumentNullException("key");
 			}
 			string cacheKey = GetCacheKey(key);
-		    _cache.Remove(cacheKey);
+			_cache.Remove(cacheKey);
 		}
+
+		public Task RemoveAsync(object key, CancellationToken cancellationToken)
+		{
+			return Task.Run(() =>
+			{
+				Remove(key);
+			}, cancellationToken);
+		}
+
 
 		/// <summary>
 		/// Get a reasonable "lock timeout"
@@ -216,6 +263,14 @@ namespace NHibernate.Caches.SysCache3
 		public void Unlock(object key)
 		{
 			//nothing to do since we arent locking
+		}
+
+		public Task UnlockAsync(object key, CancellationToken cancellationToken)
+		{
+			return Task.Run(() =>
+			{
+				Unlock(key);
+			}, cancellationToken);
 		}
 
 		#endregion
@@ -278,7 +333,7 @@ namespace NHibernate.Caches.SysCache3
 		}
 
 		private void CreateDependencyEnlisters(CacheDependenciesElement dependencyConfig, string defaultConnectionName,
-		                                       string defaultConnectionString)
+											   string defaultConnectionString)
 		{
 			//dont do anything if there is no config
 			if (dependencyConfig == null)
@@ -297,10 +352,10 @@ namespace NHibernate.Caches.SysCache3
 					{
 						path = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, path);
 					}
-                    if (File.Exists(path))
-				    {
-                        paths.Add(path);
-				    }
+					if (File.Exists(path))
+					{
+						paths.Add(path);
+					}
 				}
 				_dependencyEnlisters.Add(new FileCacheDependencyEnlister(paths));
 			}
@@ -341,8 +396,8 @@ namespace NHibernate.Caches.SysCache3
 					}
 
 					var commandEnlister = new SqlCommandCacheDependencyEnlister(commandConfig.Command, commandConfig.IsStoredProcedure,
-					                                                            commandConfig.CommandTimeout, connectionName, 
-                                                                                connectionStringProvider);
+																				commandConfig.CommandTimeout, connectionName, 
+																				connectionStringProvider);
 					_dependencyEnlisters.Add(commandEnlister);
 				}
 			}
@@ -360,26 +415,26 @@ namespace NHibernate.Caches.SysCache3
 
 		private void CacheRootItem()
 		{
-            var policy = new CacheItemPolicy();
+			var policy = new CacheItemPolicy();
 			policy.AbsoluteExpiration = ObjectCache.InfiniteAbsoluteExpiration;
 			policy.SlidingExpiration = ObjectCache.NoSlidingExpiration;
 			policy.Priority = CacheItemPriority.Default;
 			policy.RemovedCallback = RootCacheItemRemovedCallback; 
 
-		    foreach (ICacheDependencyEnlister enlister in _dependencyEnlisters)
-		    {
-                policy.ChangeMonitors.Add(enlister.Enlist());
-		    }
+			foreach (ICacheDependencyEnlister enlister in _dependencyEnlisters)
+			{
+				policy.ChangeMonitors.Add(enlister.Enlist());
+			}
 
-		    _cache.Add(_rootCacheKey, _rootCacheKey, policy);
+			_cache.Add(_rootCacheKey, _rootCacheKey, policy);
 			
 			_isRootItemCached = true;
 		}
 
-        private void RootCacheItemRemovedCallback(CacheEntryRemovedArguments arguments)
-	    {
-            _isRootItemCached = false;
-	    }
+		private void RootCacheItemRemovedCallback(CacheEntryRemovedArguments arguments)
+		{
+			_isRootItemCached = false;
+		}
 
 		private DateTime GetCacheItemExpiration()
 		{
